@@ -4,7 +4,9 @@
 # ----------------------------------------------------------------------------------------------------------------
 #
 import laspy
+import numpy as np
 from laspy.point.dims import PointFormatDict, _build_point_formats_dtypes, POINT_FORMAT_DIMENSIONS, DIMENSIONS_TO_TYPE
+from src.io.reader.ascii import read_ascii
 
 from test.test_files import tmc_traj_100
 
@@ -48,15 +50,34 @@ def test_create_point_format():
     dims.ALL_POINT_FORMATS_DTYPE = PointFormatDict({**dims.POINT_FORMATS_DTYPE})
     import laspy
     pf = laspy.point.PointFormat(324)
-
-    print(laspy.point.format.supported_point_formats())
-    pass
+    assert 324 in laspy.supported_point_formats()
 
 
 def test_read_tmc_traj():
-    tmc_format = TmcTrajectory()
-    csv_reader = create_csv_reader(tmc_format, row_skip=1, delimiter=r",")
-    result = csv_reader(tmc_traj_100)
+    POINT_FORMAT_TMC = {
+        "gps_time": np.dtype("f8"),
+        "roll": np.dtype("f8"),
+        "pitch": np.dtype("f8"),
+        "yaw": np.dtype("f8"),
+        "X": np.dtype("f4"),
+        "Y": np.dtype("f4"),
+        "Z": np.dtype("f4")
+    }
+
+    from src.io.patches.monkey_patch_laspy import CustomPointFormat, patch_laspy_types
+
+    patch_laspy_types({324: POINT_FORMAT_TMC})
+    import laspy as claspy  # noqa: E402
+    claspy.PointFormat = CustomPointFormat
+    df = read_ascii(tmc_traj_100, row_skip=1, delimiter=r",", point_format=324, dimension_names=["gps_time", "roll", "pitch", "yaw", "X", "Y", "Z"])
+    assert df.shape == (99, 7)
+    assert df["gps_time"].iloc[0] == 551187.063988
+    assert df["roll"].iloc[0] == -0.740754
+    assert df["pitch"].iloc[0] == -0.501459
+    assert df["yaw"].iloc[0] == 66.021689
+    assert df["X"].iloc[0] == 4055672.4796 - df.metadata["offset"]["X"]
+    assert df["Y"].iloc[0] == 615771.9272 - df.metadata["offset"]["Y"]
+    assert df["Z"].iloc[0] == 4867783.8794 - df.metadata["offset"]["Z"]
 
 
 def test_laspy_we():
