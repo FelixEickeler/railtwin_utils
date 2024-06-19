@@ -49,23 +49,14 @@ class CustomPointFormat(format.PointFormat):
         """
         Convert a PackedPointRecord to a pandas DataFrame
         """
-        data = {}
-        for dim in source_point_record.dimensions:
-            data[dim.name] = dim.unpack(source_point_record)
-
-
-        return pd.DataFrame(source_point_record.memoryview())
+        raise NotImplementedError
 
     @staticmethod
     def from_dataframe(data: pd.DataFrame, xyz_f8: bool = True) -> "PackedPointRecord":
         """
         Convert a pandas DataFrame to a PackedPointRecord
         """
-        point_format, mapping = CustomPointFormat.select_point_format(list(data.columns))
-        point_record = point_format.zeros(len(data))
-        for dim_name, dim in mapping.items():
-            point_record[dim] = data[dim_name].values
-        return point_record
+        raise NotImplementedError
 
     @staticmethod
     def select_point_format(dimension_names: Iterable[str]) -> PointFormat:

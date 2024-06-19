@@ -242,14 +242,23 @@ def custom_FrameAssignILoc_call(self, value: tp.Any, *, fill_value: tp.Any = np.
     return container
 
 
+original_frame_constructor = Frame.__init__
+
+
 class CustomFrame(Frame):
     def __init__(self, *args, **kwargs):
-        self._metadata = kwargs.pop('metadata', {})
-        super().__init__(*args, **kwargs)
+        metadata = kwargs.pop('metadata', {})
+        original_frame_constructor(self, *args, **kwargs)
+        # weird hack
+        setattr(self.__class__, "metadata", metadata)
 
-    @property
-    def metadata(self):
-        return self._metadata
+    # @property
+    # def metadata(self):
+    #     return self._metadata
+    #
+    # @metadata.setter
+    # def metadata(self, metadata):
+    #     self._metadata = metadata
 
     def to_npz(self, fp: TPathSpecifier, *, include_index: bool = True, include_columns: bool = True, consolidate_blocks: bool = False, metadata=None) -> None:
         if metadata is None:
