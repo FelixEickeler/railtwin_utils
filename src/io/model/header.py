@@ -1,6 +1,6 @@
 # 19/06/2024$ -----------------------------------------------------------------------------------------------------
 #  created by: felix 
-#              felix.eickeler@obermeyer-group.com    
+#              felix@eickeler.com    
 # ----------------------------------------------------------------------------------------------------------------
 #
 import json
@@ -9,7 +9,7 @@ from collections import namedtuple
 from typing import List
 from datetime import date
 
-min_max = namedtuple('expansion', 'mix max')
+min_max = namedtuple('boundary', 'mix max')
 xyz = namedtuple('offset', 'X Y Z')
 
 

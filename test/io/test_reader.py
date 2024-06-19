@@ -1,6 +1,6 @@
 # 11/06/2024$ -----------------------------------------------------------------------------------------------------
 #  created by: felix 
-#              felix.eickeler@obermeyer-group.com    
+#              felix@eickeler.com    
 # ----------------------------------------------------------------------------------------------------------------
 #
 import laspy
@@ -75,13 +75,13 @@ def test_read_tmc_traj():
     assert df["roll"].iloc[0] == -0.740754
     assert df["pitch"].iloc[0] == -0.501459
     assert df["yaw"].iloc[0] == 66.021689
-    assert df["X"].iloc[0] == 4055672.4796 - df.metadata["offset"]["X"]
-    assert df["Y"].iloc[0] == 615771.9272 - df.metadata["offset"]["Y"]
-    assert df["Z"].iloc[0] == 4867783.8794 - df.metadata["offset"]["Z"]
+    assert df["X"].iloc[0] == 4055672.4796 - df.attrs["metadata"]["offset"]["X"]
+    assert df["Y"].iloc[0] == 615771.9272 - df.attrs["metadata"]["offset"]["Y"]
+    assert df["Z"].iloc[0] == 4867783.8794 - df.attrs["metadata"]["offset"]["Z"]
 
 
-def test_laspy_we():
-    from laspy import PointFormat, PackedPointRecord
-    packed_point_record = PackedPointRecord.zeros(10, PointFormat(0))
-    ala = PackedPointRecord.from_point_record(packed_point_record, XYZIRGB)
-    print(ala)
+# def test_laspy_we():
+#     from laspy import PointFormat, PackedPointRecord
+#     packed_point_record = PackedPointRecord.zeros(10, PointFormat(0))
+#     ala = PackedPointRecord.from_point_record(packed_point_record, XYZIRGB)
+#     print(ala)

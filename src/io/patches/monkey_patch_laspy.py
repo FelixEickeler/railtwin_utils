@@ -1,6 +1,6 @@
 # 14/06/2024$ -----------------------------------------------------------------------------------------------------
 #  created by: felix 
-#              felix.eickeler@obermeyer-group.com    
+#              felix@eickeler.com    
 # ----------------------------------------------------------------------------------------------------------------
 #
 from typing import Mapping, Iterable, Dict, List
@@ -133,21 +133,22 @@ def select_width(text_ref, start_bit):
     return dtype
 
 
-def patch_laspy_types(custom_formats, overwrite: bool = False):
+def patch_laspy_types(custom_formats, overwrite: bool = True):
     fmt_versioning = []
     if "CUSTOM" in dims.VERSION_TO_POINT_FMT:
         fmt_versioning = list(dims.VERSION_TO_POINT_FMT["CUSTOM"])
 
-        for record_id, format_definition in custom_formats.items():
-            _dimensions_names = list(format_definition.keys())
-            _point_format, _composed_fields = _build_custom_types(format_definition)
+    for record_id, format_definition in custom_formats.items():
+        _dimensions_names = list(format_definition.keys())
+        _point_format, _composed_fields = _build_custom_types(format_definition)
 
-            if record_id in dims.POINT_FORMAT_DIMENSIONS and not overwrite:
-                raise ValueError(f"Point format {record_id} already exists")
+        if record_id in dims.POINT_FORMAT_DIMENSIONS and not overwrite:
+            raise ValueError(f"Point format {record_id} already exists")
 
-            dims.ALL_POINT_FORMATS_DIMENSIONS[record_id] = _dimensions_names
-            dims.ALL_POINT_FORMATS_DTYPE[record_id] = _point_format
-            dims.COMPOSED_FIELDS[record_id] = _composed_fields
-            fmt_versioning += [record_id]
-            CustomPointFormat.register_fmt(record_id, format_definition)
+        dims.ALL_POINT_FORMATS_DIMENSIONS[record_id] = _dimensions_names
+        dims.ALL_POINT_FORMATS_DTYPE[record_id] = _point_format
+        dims.COMPOSED_FIELDS[record_id] = _composed_fields
+        fmt_versioning += [record_id]
+        CustomPointFormat.register_fmt(record_id, format_definition)
+
     dims.VERSION_TO_POINT_FMT["CUSTOM"] = tuple(fmt_versioning)
