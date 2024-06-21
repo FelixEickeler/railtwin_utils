@@ -33,7 +33,7 @@ def test_build_custom_types():
 
 
 def test_CustomPointFormat_SelectPointFormat_CorrectSelection():
-    from src.io.formats import CustomPointFormat
+    from src.io.patches.patch_laspy  import CustomPointFormat
     point_format, mapping = CustomPointFormat.select_point_format(["x", "y", "z"])
     assert point_format.id == 0
 
@@ -50,10 +50,11 @@ def test_CustomPointFormat_SelectPointFormat_CorrectSelection():
     assert point_format.id == 7
 
 
-
+@pytest.mark.skip(reason="not implemented")
 def test_CustomPointFormat_AsDataframe():
     # tesdata as las ?
     raise NotImplementedError
+@pytest.mark.skip(reason="not implemented")
 def test_FromDataframe():
     # testdata as dataframe
     raise NotImplementedError

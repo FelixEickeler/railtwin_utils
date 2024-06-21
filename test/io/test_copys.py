@@ -3,15 +3,15 @@
 #              felix@eickeler.com    
 # ----------------------------------------------------------------------------------------------------------------
 #
+from datetime import date
+
 import laspy
 import numpy as np
 import pandas
 import pandas as pd
 import pytest
-from datetime import date
-import json
-from src.io.formats.header import Header, xyz, min_max  # Adjust the import as necessary
-from src.io.patches.patch_static_frame import custom_static_frame as csf
+
+from src.model.header import xyz, min_max
 
 
 @pytest.fixture

@@ -8,9 +8,8 @@ from datetime import date
 
 import laspy
 import numpy as np
-import pytest
 
-from src.io.formats.header import Header, xyz, min_max
+from src.model.header import Header, xyz, min_max
 
 
 def test_header_from_laspy():

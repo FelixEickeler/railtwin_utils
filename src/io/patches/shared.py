@@ -3,13 +3,13 @@
 #              felix@eickeler.com    
 # ----------------------------------------------------------------------------------------------------------------
 #
-from src.io.patches.patch_laspy import claspy
 import numpy as np
 import pandas as pd
 from static_frame import Index
 
-from src.io.formats.header import Header
 from src.io.patches.patch_laspy import CustomPointFormat
+from src.io.patches.patch_laspy import claspy
+from src.model.header import Header
 
 
 def _from_las_to_pandas(src: "PackedPointRecord", remove_empty=True) -> pd.DataFrame:
@@ -56,3 +56,4 @@ def _from_pandas_to_las(src: pd.DataFrame, xyz_f8: bool = None) -> pd.DataFrame:
     header.point_count = len(lasdata)
 
     return lasdata
+

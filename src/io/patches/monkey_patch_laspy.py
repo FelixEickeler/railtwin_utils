@@ -5,7 +5,6 @@
 #
 from typing import Mapping, Iterable, Dict, List
 
-import laspy
 import numpy as np
 import pandas as pd
 from laspy import PointFormat
@@ -15,10 +14,13 @@ from logging import getLogger
 
 logger = getLogger("RailtwinUtils")
 
+old_point_format = format.PointFormat
+
 
 # noinspection PyMissingConstructor
-class CustomPointFormat(format.PointFormat):
-    FMT_TRACKER = {}
+class CustomPointFormat(old_point_format):
+    FMT_TRACKER = {pfid: {name: pfdt[name] for name in pfdt.names} for pfid, pfdt in dims.ALL_POINT_FORMATS_DTYPE.items()}
+    # {name: self.FMT_TRACKER[10][name] for name in self.FMT_TRACKER[10].names}
 
     def __init__(self, point_format_id: int):
         self.id: int = point_format_id
@@ -63,7 +65,7 @@ class CustomPointFormat(format.PointFormat):
         voting = {existing_format: 0 for existing_format in dims.ALL_POINT_FORMATS_DIMENSIONS}
         mapping = {}
         for record_id in voting:
-            mapping[record_id] = {dim.lower(): dim for dim in PointFormat(record_id).dimension_names}
+            mapping[record_id] = {dim.lower(): dim for dim in CustomPointFormat(record_id).dimension_names}
         this_mapping = {}
 
         for dim_name in dimension_names:

@@ -71,13 +71,13 @@ def test_read_tmc_traj():
     claspy.PointFormat = CustomPointFormat
     df = read_ascii(tmc_traj_100, row_skip=1, delimiter=r",", point_format=324, dimension_names=["gps_time", "roll", "pitch", "yaw", "X", "Y", "Z"])
     assert df.shape == (99, 7)
-    assert df["gps_time"].iloc[0] == 551187.063988
-    assert df["roll"].iloc[0] == -0.740754
-    assert df["pitch"].iloc[0] == -0.501459
-    assert df["yaw"].iloc[0] == 66.021689
-    assert df["X"].iloc[0] == 4055672.4796 - df.attrs["metadata"]["offset"]["X"]
-    assert df["Y"].iloc[0] == 615771.9272 - df.attrs["metadata"]["offset"]["Y"]
-    assert df["Z"].iloc[0] == 4867783.8794 - df.attrs["metadata"]["offset"]["Z"]
+    assert df["gps_time"].iloc[0] == 33137.053007
+    assert df["roll"].iloc[0] == -0.749040000000
+    assert df["pitch"].iloc[0] == -0.540089000000
+    assert df["yaw"].iloc[0] == 127.328366000000
+    assert df["X"].iloc[0] == 4106909.3875 - df.attrs["metadata"]["offset"].X
+    assert df["Y"].iloc[0] == 611583.7864 - df.attrs["metadata"]["offset"].Y
+    assert df["Z"].iloc[0] == 4825434.7006 - df.attrs["metadata"]["offset"].Z
 
 
 # def test_laspy_we():

@@ -3,6 +3,4 @@
 #              felix@eickeler.com    
 # ----------------------------------------------------------------------------------------------------------------
 #
-# noqa: F401
 
-from src.io.patches.patch_laspy import CustomPointFormat, claspy
